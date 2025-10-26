@@ -11,56 +11,35 @@ class AssgnTask4{
         int rows = board.length, cols = board[0].length;
         int layers = rows / 2;
 
-        for(int layer = layers - 1; layer >= 0; layer--) {
-            int first = layer;
-            int last = rows - 1 - layer;
+        for (int layer = 0; layer < layers; layer++) {
+            int top = layer;
+            int left = top;
+            int btm = rows - 1 - layer;
+            int right = btm;
+
             int rotations = layers - layer;
-            int arrsize = (last - first) * 4;
 
-            char[] loop = new char[arrsize];
-            int pos = 0;
+            while (rotations > 0) {
+                char temp = board[top][left];
 
-            for(int j = first; j <= last; j++) {
-                loop[pos++] = board[first][j];
-            }
-
-            for(int i = first + 1; i <= last - 1; i++) {
-                loop[pos++] = board[i][last];
-            }
-
-            for(int j = last; j >= first; j--) {
-                loop[pos++] = board[last][j];
-            }
-
-            for (int i = last - 1; i >= first + 1; i--) {
-                loop[pos++] = board[i][first];
-            }
-
-            for(int r = 0; r < rotations; r++) {
-                char temp = loop[arrsize - 1];
-
-                for(int i = arrsize - 1; i > 0; i--) {
-                    loop[i] = loop[i - 1];
+                for (int i = top; i < btm; i++) {
+                    board[i][left] = board[i + 1][left];
                 }
-                loop[0] = temp;
-            }
 
-            pos = 0;
+                for (int j = left; j < right; j++) {
+                    board[btm][j] = board[btm][j + 1];
+                }
 
-            for(int j = first; j <= last; j++) {
-                board[first][j] = loop[pos++];
-            }
+                for (int i = btm; i > top; i--) {
+                    board[i][right] = board[i - 1][right];
+                }
 
-            for(int i = first + 1; i <= last - 1; i++) {
-                board[i][last] = loop[pos++];
-            }
+                for (int j = right; j > left + 1; j--) {
+                    board[top][j] = board[top][j - 1];
+                }
 
-            for (int j = last; j >= first; j--) {
-                board[last][j] = loop[pos++];
-            }
-
-            for (int i = last - 1; i >= first + 1; i--) {
-                board[i][first] = loop[pos++];
+                board[top][left + 1] = temp;
+                rotations--;
             }
         }
 
