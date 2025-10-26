@@ -16,8 +16,8 @@ public class LabTask1 {
         Node current = head;
 
         while(current.next != null) {
-            int curr = (Integer) current.elem;
-            int next = (Integer) current.next.elem;
+            int curr = (int) current.elem;
+            int next = (int) current.next.elem;
 
             if(curr > next) {
                 return false;
