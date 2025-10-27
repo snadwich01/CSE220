@@ -1,6 +1,7 @@
 // LabTask1: Assemble Conga Line
+
 public class LabTask1 {
-	
+ 
     // No need to submit this task
     public static Boolean assembleCongaLine(Node head){
         
@@ -12,14 +13,11 @@ public class LabTask1 {
         //        (int)n.elem  or  (Integer)n.elem
         
         //When you're ready to return the boolean remove the following line
-
         Node current = head;
 
         while(current.next != null) {
-            int curr = (int) current.elem;
-            int next = (int) current.next.elem;
-
-            if(curr > next) {
+                       
+            if((Integer) current.elem > (Integer) current.next.elem) {
                 return false;
             }
 
