@@ -1,81 +1,80 @@
+// NO NEED THIS SUBMIT THIS CLASS
 public class WRM {
-    Patient dh; // dummy head
+    Patient dh;
 
+    //The constructor is already created for you
     public WRM() {
         dh = new Patient(null, null, null, null, null, null);
-        dh.next = dh; // circular link
+        dh.next = dh;
         dh.prev = dh;
     }
 
-    // Register a patient (add to the end of the line)
     public void registerPatient(int id, String name, int age, String bloodgroup) {
-        Patient newP = new Patient(id, name, age, bloodgroup, null, null);
+        Patient addp = new Patient(id, name, age, bloodgroup, null, null);
 
-        // Insert before dummy head (end of list)
-        newP.prev = dh.prev;
-        newP.next = dh;
+        Patient tail = dh.prev;
 
-        dh.prev.next = newP;
-        dh.prev = newP;
-
-        System.out.println("Patient " + id + " registered.");
+        tail.next = addp;
+        addp.prev = tail;
+        addp.next = dh;
+        dh.prev = addp;
     }
 
-    // Serve the first patient (remove from the start)
     public void servePatient() {
-        if (dh.next == dh) {
-            System.out.println("No patients to serve!");
-            return;
+        Patient queue = dh.next;
+
+        if(dh.next == dh) {
+            System.out.println("No patients in line");
+        } else {
+            dh.next = queue.next;
+            queue.next.prev = dh;
+
+            System.out.println("serving" + queue.id);
         }
-
-        Patient first = dh.next;
-
-        dh.next = first.next;
-        first.next.prev = dh;
-
-        System.out.println("Serving patient: " + first.id);
     }
 
-    // Show all patients in order
     public void showAllPatient() {
-        if (dh.next == dh) {
-            System.out.println("No patients waiting.");
-            return;
-        }
+        Patient queue = dh.next;
 
-        System.out.print("Patients in line: ");
-        Patient temp = dh.next;
-        while (temp != dh) {
-            System.out.print(temp.id + " ");
-            temp = temp.next;
+        if(dh.next == dh) {
+            System.out.println("no patients in line");
+        } else {
+            while(queue.next != dh) {
+                System.out.println(queue.id);
+                queue = queue.next;
+            }
         }
-        System.out.println();
     }
 
-    // Check if doctor can go home
     public Boolean canDoctorGoHome() {
-        return dh.next == dh; // true if empty
+        if(dh.next == dh) {
+            return true;
+        }
+        return false;
     }
 
-    // Cancel all appointments
     public void cancelAll() {
         dh.next = dh;
         dh.prev = dh;
-        System.out.println("All appointments cancelled.");
+
+        System.out.println("cancelled");
     }
 
-    // Reverse the line
+
     public void reverseTheLine() {
-        if (dh.next == dh || dh.next.next == dh) return; // 0 or 1 patient
+        Patient curr = dh.next;
+        Patient queue = curr.next;
 
-        Patient current = dh;
-        do {
-            Patient temp = current.next;
-            current.next = current.prev;
-            current.prev = temp;
-            current = temp;
-        } while (current != dh);
-
-        System.out.println("Line reversed.");
+        if(dh.next == dh) {
+            System.out.println("no patients in line");
+        } else {
+            while (queue.next != dh) {
+                curr.next = curr.prev;
+                curr.prev = queue;
+                curr = queue;
+            }
+            System.out.println("reversed");
+        }
     }
+
 }
