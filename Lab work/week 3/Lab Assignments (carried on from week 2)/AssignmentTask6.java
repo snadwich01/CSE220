@@ -4,23 +4,22 @@ public class AssignmentTask6 {
     public static void pairJoin(DNode dh1, DNode dh2) {
         DNode c1 = dh1.next;
         DNode c2 = dh2.next;
-        DNode head = dh1;
-        DNode tail = head;
+        DNode t1 = dh1;
 
         while(c1 != null && c2 != null) {
-            tail.next = c1;
-            c1.prev = tail;
-            tail = c1;
+            t1.next = c1;
+            c1.prev = t1;
+            t1 = c1;
             c1 = c1.next;
 
-            tail.next = c2;
-            c2.prev = tail;
-            tail = c2;
+            t1.next = c2;
+            c2.prev = t1;
+            t1 = c2;
             c2 = c2.next;
         }
         
-        tail.next = head;
-        head.prev = tail;
+        t1.next = dh1;
+        dh1.prev = t1;
 
         while(c1 != null) {
             System.out.print(c1.elem + " ");
