@@ -33,19 +33,17 @@ public class HashTable {
         int len = key.length();
         int sum = 0;
 
-        if(len % 2 == 0){ 
-            // Even length → sum of ASCII of even index chars
-            for(int i = 0; i < len; i += 2){
+        if(len % 2 == 0) {
+            for(int i= 0; i < len; i+= 2) {
                 sum += key.charAt(i);
             }
-        } else { 
-            // Odd length → sum of ASCII of odd index chars
-            for(int i = 1; i < len; i += 2){
+        } else {
+            for(int i = 1; i < len; i += 2) {
                 sum += key.charAt(i);
             }
         }
 
-        return sum % ht.length;
+        return sum % len;
     }
 
     //you need to COMPLETE this method
@@ -54,46 +52,38 @@ public class HashTable {
     //If collision occurs resolve using the steps explained in the question
     public void insert(String key, Integer value){
         int index = hashFunction(key);
-        FruitNode newNode = new FruitNode(key, value);
+        FruitNode fruit = new FruitNode(key, value);
+        FruitNode curr = ht[index];
+        FruitNode prev = null;
 
-        // Case 1: Empty slot
-        if(ht[index] == null){
-            ht[index] = newNode;
+        if(ht[index] == null) {
+            ht[index] = fruit;
             return;
         }
 
-        FruitNode current = ht[index];
-        FruitNode prev = null;
-
-        // Check if key already exists -> update value
-        while(current != null){
-            if(current.fruit[0].equals(key)){
-                current.fruit[1] = value;  // update
+        while(curr != null) {
+            if(curr.fruit[0].equals(key)) {
+                curr.fruit[1] = value;
                 return;
             }
-            prev = current;
-            current = current.next;
+            prev = curr;
+            curr = curr.next;
         }
 
-        // If not found, insert in descending order by price
-        current = ht[index];
+        curr = ht[index];
         prev = null;
 
-        while(current != null && (Integer)current.fruit[1] > value){
-            prev = current;
-            current = current.next;
+        while(curr != null && (Integer)curr.fruit[1] > value) {
+            prev = curr;
+            curr = curr.next;
         }
 
-        if(prev == null){
-            // Insert at head
-            newNode.next = ht[index];
-            ht[index] = newNode;
+        if(prev == null) {
+            fruit.next = ht[index];
+            ht[index] = fruit;
         } else {
-            // Insert in between or at end
-            newNode.next = current;
-            prev.next = newNode;
+            fruit.next = curr;
+            prev.next = fruit;
         }
     }
     }
-
-
