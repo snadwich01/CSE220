@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class StackAndQueueAssgnTaskTester {
 
@@ -14,7 +12,7 @@ public class StackAndQueueAssgnTaskTester {
 
         //checking stacktheses
         Stack stack = new Stack();
-        Queue<String> queue = new LinkedList<>();
+        LinkedListQueue queue = new LinkedListQueue();
 
         for(int i = 0; i < len; i++) {
             char check = expression.charAt(i);
@@ -33,7 +31,7 @@ public class StackAndQueueAssgnTaskTester {
                 
                 if((check == ')' && open != '(') || (check == '}' && open != '{') || (check == ']' && open != '[')) {
                     //if no matching parentheses in stack
-                    System.out.println("Invalid expression");
+                    System.out.println("Invalid Expression");
                     return;
                 }
             }
@@ -50,6 +48,7 @@ public class StackAndQueueAssgnTaskTester {
 
         //CONVERSIONNN  (INFIX -> POSTFIX) AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
         String num = "";
+        int queueCount = 0;
 
         for(int i = 0; i < len; i++) {
             char check = expression.charAt(i);
@@ -57,14 +56,16 @@ public class StackAndQueueAssgnTaskTester {
             //NUMBERS----------------------------------------------------
             if(check == ' ') {
                 if(num.length() > 0) {
-                    queue.add(num);
+                    queue.enqueue(num);
+                    queueCount++;
                     num = "";
                 }
             } else if(check >= '0' && check <= '9') {
                 num = num + check;
             } else {
                 if(num.length() > 0) {
-                    queue.add(num);
+                    queue.enqueue(num);
+                    queueCount++;
                     num = "";
                 }
 
@@ -81,7 +82,8 @@ public class StackAndQueueAssgnTaskTester {
 
                     String operator = "";
                     operator = operator + lastin;
-                    queue.add(operator);
+                    queue.enqueue(operator);
+                    queueCount++;
                     }
                 } //OPERATORS--------------------------------------------
                 else if(check == '+' || check == '-' || check == '*' || check == '/' || check == '^') {
@@ -115,7 +117,8 @@ public class StackAndQueueAssgnTaskTester {
                         stack.pop();
                         String op = "";
                         op = op + lastin;
-                        queue.add(op);
+                        queue.enqueue(op);
+                        queueCount++;
                     } else {
                         break;
                     }
@@ -126,36 +129,33 @@ public class StackAndQueueAssgnTaskTester {
         }
 
         if(num.length() > 0) {
-            queue.add(num);
+            queue.enqueue(num);
+            queueCount++;
         }
 
-        //queuein operators---------------------------------------------
         while(stack.peek() != null) {
             char op = (char) stack.pop();
             String opera = "";
             opera = opera + op;
-            queue.add(opera);
+            queue.enqueue(opera);
+            queueCount++;
         }
 
         //print----------------------------------------------------------
         System.out.print("Postfix: ");
-        int size = queue.size();
-        for(int i = 0; i < size; i++) {
-            String data = (String) queue.remove();
+        for(int i = 0; i < queueCount; i++) {  // ← USE COUNTER FOR ROTATION
+            String data = (String) queue.dequeue();
             System.out.print(data + " ");
-            queue.add(data);
+            queue.enqueue(data);  // ← ROTATE: enqueue back immediately
         }
         System.out.println();
 
         //EVAL------------------------------------------------------------
-        int funcsize = queue.size();
-
-        for(int i = 0; i < funcsize; i++) {
-            String token = (String) queue.remove();
-
+        while(!queue.isEmpty()) {
+            String token = (String) queue.dequeue();
             char first = token.charAt(0);
-
-            //nubmer---------------------------
+            
+            //number---------------------------
             if(first >= '0' && first <= '9') {
                 double n = Integer.parseInt(token);
                 stack.push(n);
@@ -163,8 +163,8 @@ public class StackAndQueueAssgnTaskTester {
                 double num1 = (double) stack.pop();
                 double num2 = (double) stack.pop();
                 double res = 0;
-
                 char op = token.charAt(0);
+                
                 if(op == '+') {
                     res = num1 + num2;
                 } else if(op == '-') {
@@ -179,13 +179,13 @@ public class StackAndQueueAssgnTaskTester {
                         res = res * num2;
                     }
                 }
-
                 stack.push(res);
             }
         }
 
         double finalres = (double) stack.pop();
         System.out.println("Result: " + (int)finalres);
+
     }
 
     // DO NOT CHANGE ANYTHING IN THE DRIVER CODE
