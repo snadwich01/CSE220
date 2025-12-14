@@ -20,7 +20,7 @@ public class Task2 {
             path += current.elem + " ";
 
             if (current.elem.equals(key)) {
-                return path.trim();
+                return path;
             }
             else if (key < current.elem) {
                 current = current.left;
