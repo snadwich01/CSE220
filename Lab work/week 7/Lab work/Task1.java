@@ -3,16 +3,18 @@ public class MinHeap {
     private int[] heap;
     private int size;
 
+    // Constructor
     public MinHeap(int capacity) {
         heap = new int[capacity];
         size = 0;
     }
 
-    // Insert element
+    // Insert element into heap
     public void insert(int value) {
         if (size == heap.length) {
-            throw new RuntimeException("Heap is full");
+            return; // heap is full, do nothing
         }
+
         heap[size] = value;
         swim(size);
         size++;
@@ -22,7 +24,11 @@ public class MinHeap {
     private void swim(int index) {
         while (index > 0) {
             int parent = (index - 1) / 2;
-            if (heap[index] >= heap[parent]) break;
+
+            if (heap[index] >= heap[parent]) {
+                return;
+            }
+
             swap(index, parent);
             index = parent;
         }
@@ -31,7 +37,7 @@ public class MinHeap {
     // Remove minimum element
     public int extractMin() {
         if (size == 0) {
-            throw new RuntimeException("Heap is empty");
+            return -1; // heap is empty
         }
 
         int min = heap[0];
@@ -52,39 +58,42 @@ public class MinHeap {
             if (left < size && heap[left] < heap[smallest]) {
                 smallest = left;
             }
+
             if (right < size && heap[right] < heap[smallest]) {
                 smallest = right;
             }
 
-            if (smallest == index) break;
+            if (smallest == index) {
+                return;
+            }
 
             swap(index, smallest);
             index = smallest;
         }
     }
 
-    // HeapSort (Descending Order)
+    // Heapsort (Descending Order)
     public int[] heapsort() {
-        int[] backup = new int[size];
-        for (int i = 0; i < size; i++) {
-            backup[i] = heap[i];
+
+        // Step 1: Copy original heap into instance array
+        int[] copiedHeap = new int[heap.length];
+        for (int i = 0; i < heap.length; i++) {
+            copiedHeap[i] = heap[i];
         }
 
         int originalSize = size;
-        int[] sorted = new int[size];
 
+        // Step 2: Sort using extractMin
+        int[] sorted = new int[size];
         for (int i = 0; i < sorted.length; i++) {
             sorted[i] = extractMin();
         }
 
-        // Restore original heap
-        heap = new int[backup.length];
-        for (int i = 0; i < backup.length; i++) {
-            heap[i] = backup[i];
-        }
+        // Step 3: Restore original heap
+        heap = copiedHeap;
         size = originalSize;
 
-        // Reverse to get descending order
+        // Step 4: Reverse for descending order
         for (int i = 0; i < sorted.length / 2; i++) {
             int temp = sorted[i];
             sorted[i] = sorted[sorted.length - 1 - i];
@@ -94,6 +103,7 @@ public class MinHeap {
         return sorted;
     }
 
+    // Swap helper
     private void swap(int i, int j) {
         int temp = heap[i];
         heap[i] = heap[j];
