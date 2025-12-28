@@ -17,7 +17,7 @@ public class Task5 {
     public static String[] sort(String[] names, int[] priorities) {
         int n = names.length;
 
-        TaskMaxHeap heap = new TaskMaxHeap(n);
+        maxheap heap = new maxheap(n);
 
         for (int i = 0; i < n; i++) {
             heap.insert(names[i], priorities[i]);
@@ -31,23 +31,23 @@ public class Task5 {
         return result;
     }
 
-    static class TaskMaxHeap {
+    static class maxheap {
 
         private String[] names;
-        private int[] prios;
+        private int[] priorities;
         private int size;
 
-        public TaskMaxHeap(int capacity) {
+        public maxheap(int capacity) {
             names = new String[capacity];
-            prios = new int[capacity];
+            priorities = new int[capacity];
             size = 0;
         }
 
         public void insert(String name, int priority) {
-            if (size == prios.length) return;
+            if (size == priorities.length) return;
 
             names[size] = name;
-            prios[size] = priority;
+            priorities[size] = priority;
             swim(size);
             size++;
         }
@@ -58,7 +58,7 @@ public class Task5 {
             String maxName = names[0];
 
             names[0] = names[size - 1];
-            prios[0] = prios[size - 1];
+            priorities[0] = priorities[size - 1];
             size--;
             sink(0);
 
@@ -69,7 +69,9 @@ public class Task5 {
             while (index > 0) {
                 int parent = (index - 1) / 2;
 
-                if (prios[index] <= prios[parent]) return;
+                if (priorities[index] <= priorities[parent]) {
+                    return;
+                }
 
                 swap(index, parent);
                 index = parent;
@@ -82,10 +84,21 @@ public class Task5 {
                 int right = 2 * index + 2;
                 int largest = index;
 
-                if (left < size && prios[left] > prios[largest]) largest = left;
-                if (right < size && prios[right] > prios[largest]) largest = right;
+                if (left < size) {
+                    if (priorities[left] > priorities[largest]) {
+                        largest = left;
+                    }
+                }
 
-                if (largest == index) return;
+                if (right < size) {
+                    if (priorities[right] > priorities[largest]) {
+                        largest = right;
+                    }
+                }
+
+                if (largest == index) {
+                    return;
+                }
 
                 swap(index, largest);
                 index = largest;
@@ -93,9 +106,9 @@ public class Task5 {
         }
 
         private void swap(int i, int j) {
-            int tempP = prios[i];
-            prios[i] = prios[j];
-            prios[j] = tempP;
+            int tempP = priorities[i];
+            priorities[i] = priorities[j];
+            priorities[j] = tempP;
 
             String tempN = names[i];
             names[i] = names[j];
