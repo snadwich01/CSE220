@@ -17,128 +17,102 @@ public class Task3 {
     }
 
     public static int[] sched(int[] tasks, int m) {
-        minheap minheap = new minheap(m);
+        MinHeap MinHeap = new MinHeap(m);
 
         for (int i = 0; i < m; i++) {
-            minheap.insert(0);
+            MinHeap.insert(0);
         }
 
         for (int i = 0; i < tasks.length; i++) {
             int task = tasks[i];
 
-            int head = minheap.extractMin();
+            int head = MinHeap.extractMin();
             int update = head + task;
 
-            minheap.insert(update);
+            MinHeap.insert(update);
         }
 
         int[] res = new int[m];
         for (int i = 0; i < m; i++) {
-            res[i] = minheap.extractMin();
+            res[i] = MinHeap.extractMin();
         }
 
         return res;
     }
-}
 
-    class minheap {
+    static class MinHeap {
 
-    private int[] heap;
-    private int size;
+        private int[] heap;
+        private int size;
 
-    public minheap(int capacity) {
-        heap = new int[capacity];
-        size = 0;
-    }
-
-    public void insert(int value) {
-        if (size == heap.length) {
-            return;
+        public MinHeap(int capacity) {
+            heap = new int[capacity];
+            size = 0;
         }
 
-        heap[size] = value;
-        swim(size);
-        size++;
-    }
-
-    private void swim(int index) {
-        while (index > 0) {
-            int parent = (index - 1) / 2;
-
-            if (heap[index] >= heap[parent]) {
+        public void insert(int value) {
+            if (size == heap.length) {
                 return;
             }
 
-            swap(index, parent);
-            index = parent;
-        }
-    }
-
-    public int extractMin() {
-        if (size == 0) {
-            return -1;
+            heap[size] = value;
+            swim(size);
+            size++;
         }
 
-        int min = heap[0];
-        heap[0] = heap[size - 1];
-        size--;
-        sink(0);
+        public void swim(int index) {
+            while (index > 0) {
+                int parent = (index - 1) / 2;
 
-        return min;
-    }
+                if (heap[index] >= heap[parent]) {
+                    return;
+                }
 
-    private void sink(int index) {
-        while (true) {
-            int left = 2 * index + 1;
-            int right = 2 * index + 2;
-            int smallest = index;
+                swap(index, parent);
+                index = parent;
+            }
+        }
 
-            if (left < size && heap[left] < heap[smallest]) {
-                smallest = left;
+        public int extractMin() {
+            if (size == 0) {
+                return -1;
             }
 
-            if (right < size && heap[right] < heap[smallest]) {
-                smallest = right;
+            int min = heap[0];
+            heap[0] = heap[size - 1];
+            size--;
+            sink(0);
+
+            return min;
+        }
+
+        public void sink(int index) {
+            while (true) {
+                int left = 2 * index + 1;
+                int right = 2 * index + 2;
+                int smallest = index;
+
+                if (left < size && heap[left] < heap[smallest]) {
+                    smallest = left;
+                }
+
+                if (right < size && heap[right] < heap[smallest]) {
+                    smallest = right;
+                }
+
+                if (smallest == index) {
+                    return;
+                }
+
+                swap(index, smallest);
+                index = smallest;
             }
-
-            if (smallest == index) {
-                return;
-            }
-
-            swap(index, smallest);
-            index = smallest;
-        }
-    }
-
-    public int[] heapsort() {
-
-        int[] copiedHeap = new int[heap.length];
-        for (int i = 0; i < heap.length; i++) {
-            copiedHeap[i] = heap[i];
         }
 
-        int originalSize = size;
-
-        int[] sorted = new int[size];
-        for (int i = 0; i < sorted.length; i++) {
-            sorted[i] = extractMin();
+        public void swap(int i, int j) {
+            int temp = heap[i];
+            heap[i] = heap[j];
+            heap[j] = temp;
         }
-
-        heap = copiedHeap;
-        size = originalSize;
-
-        for (int i = 0; i < sorted.length / 2; i++) {
-            int temp = sorted[i];
-            sorted[i] = sorted[sorted.length - 1 - i];
-            sorted[sorted.length - 1 - i] = temp;
-        }
-
-        return sorted;
-    }
-
-    private void swap(int i, int j) {
-        int temp = heap[i];
-        heap[i] = heap[j];
-        heap[j] = temp;
     }
 }
