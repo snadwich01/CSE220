@@ -1,0 +1,55 @@
+public class Task3a {
+
+    public static int maxdeg(int[][] matrix) {
+        int n = matrix.length;
+        int bestDeg = 0;
+
+        for (int i = 0; i < n; i++) {
+            int degree = 0;
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] != 0) degree++;
+            }
+            if (degree > bestDeg) bestDeg = degree;
+        }
+
+        return bestDeg;
+    }
+
+    public static int maxsum(int[][] matrix) {
+        int n = matrix.length;
+        int vert = 0;
+        int maxSum = 0;
+
+        for (int i = 0; i < n; i++) {
+            int sum = 0;
+            for (int j = 0; j < n; j++) {
+                sum += matrix[i][j];
+            }
+            if (sum > maxSum) {
+                maxSum = sum;
+                vert = i;
+            }
+        }
+
+        return vert;
+    }
+
+    public static void main(String[] args) {
+
+        int[][] matrix = {
+                {0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 1, 2, 0, 0, 3},
+                {0, 0, 0, 0, 1, 3, 0},
+                {0, 0, 0, 0, 3, 3, 0},
+                {0, 0, 0, 0, 0, 2, 0},
+                {0, 0, 0, 0, 0, 0, 1},
+                {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        int deg = maxdeg(matrix);
+        int vert = maxsum(matrix);
+
+        System.out.println("Maximum degree: " + deg);
+        System.out.println("Maxsum vertex: " + vert);
+    }
+}
