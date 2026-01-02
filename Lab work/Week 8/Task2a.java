@@ -3,8 +3,8 @@ public class Task2a {
     public static int maxsum(int[][] matrix) {
         int n = matrix.length;
 
-        int bestVertex = 0;
-        int bestSum = 0;
+        int vert = 0;
+        int maxSum = 0;
 
         for (int i = 0; i < n; i++) {
             int sum = 0;
@@ -13,13 +13,13 @@ public class Task2a {
                 sum += matrix[i][j];
             }
 
-            if (sum > bestSum) {
-                bestSum = sum;
-                bestVertex = i;
+            if (sum > maxSum) {
+                maxSum = sum;
+                vert = i;
             }
         }
 
-        return bestVertex;
+        return vert;
     }
 
     public static void main(String[] args) {
@@ -30,8 +30,7 @@ public class Task2a {
                 {0, 2, 0, 0, 3, 3, 0},
                 {0, 0, 1, 3, 0, 2, 0},
                 {0, 3, 3, 3, 2, 0, 1},
-                {0, 3, 0, 0, 0, 1, 0}
-        };
+                {0, 3, 0, 0, 0, 1, 0}};
 
         int ans = maxsum(matrix);
         System.out.println("Vertex: " + ans);
